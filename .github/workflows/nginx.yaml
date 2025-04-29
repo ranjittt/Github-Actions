@@ -1,5 +1,4 @@
-# .github/workflows/install-nginx-selfhosted.yml
-name: Install Nginx on Self-Hosted Runner
+name: Install Nginx on Self-Hosted macOS Runner
 
 on:
   push:
@@ -7,25 +6,25 @@ on:
 
 jobs:
   install-nginx:
-    runs-on: self-hosted  # Target your self-hosted runner
+    runs-on: self-hosted  # Your macOS self-hosted runner
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Update APT and Install Nginx
+    - name: Update Homebrew and Install Nginx
       run: |
-        sudo apt update
-        sudo apt install -y nginx
+        brew update
+        brew install nginx
 
-    - name: Start and Enable Nginx
+    - name: Start Nginx using Homebrew services
       run: |
-        sudo systemctl start nginx
-        sudo systemctl enable nginx
+        brew services start nginx
 
-    - name: Check Nginx Status
-      run: sudo systemctl status nginx
+    - name: Check Nginx Process
+      run: |
+        ps aux | grep nginx
 
     - name: Test Nginx is Running
-      run: curl -I http://localhost
-
+      run: |
+        curl -I http://localhost
